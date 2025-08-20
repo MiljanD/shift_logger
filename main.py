@@ -15,9 +15,18 @@ while True:
         parsed = Parser()
         parsed.parse(raw_data)
         parsed_raw_data = parsed.parsed_data
-        print(parsed_raw_data)
-        is_valid = Validator()
-        keys_value = []
+
+        validation = Validator()
+
         for record in parsed_raw_data:
-            keys_value.append(is_valid.check_keys(record))
-        print(keys_value)
+            if validation.is_valid(record):
+                pass
+                # Pseudocode for rest of main loop
+                # worker = Worker()
+                # if worker.is_registered(record["card_id"]):
+                #     worker.log_action(record)
+                # else:
+                #     worker.register(record)
+                #     worker.log_action()
+
+
