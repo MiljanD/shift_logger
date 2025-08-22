@@ -1,0 +1,25 @@
+from datetime import datetime, date
+
+def convert_str_to_date(str_date):
+    str_format = "%Y-%m-%dT%H:%M:%S"
+    converted_date = datetime.strptime(str_date, str_format)
+
+    return converted_date
+
+
+def convert_datetime_to_date(datetime_obj):
+    converted_date = datetime_obj.date()
+    return converted_date
+
+
+def check_date(first_datetime, second_datetime):
+    first = first_datetime.date()
+    second = second_datetime.date()
+
+    if first == second:
+        return True
+    else:
+        return False
+
+
+

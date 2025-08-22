@@ -1,7 +1,7 @@
 import re
 import datetime
 import logging
-
+from utils.time_utils import convert_str_to_date
 
 class Validator:
     def __init__(self):
@@ -37,12 +37,11 @@ class Validator:
 
 
     def check_date_stamp(self, record):
-        str_format = "%Y-%m-%dT%H:%M:%S"
         date_str = record["time"]
 
         try:
-            date_object = datetime.datetime.strptime(date_str, str_format)
-            return isinstance(date_object, datetime.datetime)
+            converted_date = convert_str_to_date(date_str)
+            return isinstance(converted_date, datetime.datetime)
         except (ValueError, TypeError):
             logging.warning("Wrong date format.")
             return False
