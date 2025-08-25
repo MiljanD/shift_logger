@@ -71,17 +71,6 @@ class Worker(Db):
                 self.con.commit()
 
 
-    def extract_logs(self, worker_id=None, date=None):
-        with self.con.cursor() as cursor:
-            query = "SELECT * FROM logs"
-            cursor.execute(query)
-            self.con.commit()
-
-            result = cursor.fetchall()
-
-        return result
-
-
     def check_out(self, worker_id, check_out_time):
         time_converted = convert_str_to_date(check_out_time)
         current_date = convert_datetime_to_date(time_converted)

@@ -36,6 +36,3 @@ while True:
                     worker.worker_name = record["name"]
                     worker.id_card = record["card_id"]
                     worker.generate_worker()
-
-
-

@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, timedelta, date
 
 def convert_str_to_date(str_date):
     str_format = "%Y-%m-%dT%H:%M:%S"
@@ -20,6 +20,18 @@ def check_date(first_datetime, second_datetime):
         return True
     else:
         return False
+
+
+def get_week_range(year, week):
+    start_day = date.fromisocalendar(year, week, 1)
+    end_day = start_day + timedelta(days=6)
+
+    return start_day, end_day
+
+
+
+
+
 
 
 
