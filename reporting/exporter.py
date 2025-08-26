@@ -36,7 +36,11 @@ class Exporter(Db):
 
         current_date = convert_datetime_to_date(current_date)
 
-        query = "SELECT * FROM logs WHERE DATE(check_in) = %s"
+        query = ("SELECT l.id AS log_id, "
+                 "w.card_id, w.name, "
+                 "l.check_in, l.check_out "
+                 "FROM logs l JOIN workers w ON l.worker_id = w.id "
+                 " WHERE DATE(l.check_in) = %s")
 
         return self._execute_query(query, (current_date,))
 
@@ -54,7 +58,11 @@ class Exporter(Db):
         start = datetime.combine(start_of_week, datetime.min.time())
         end = datetime.combine(end_of_week, datetime.max.time())
 
-        query = "SELECT * FROM logs WHERE check_in BETWEEN %s AND %s"
+        query = ("SELECT l.id AS log_id, "
+                 "w.card_id, w.name, "
+                 "l.check_in, l.check_out "
+                 "FROM logs l JOIN workers w ON l.worker_id=w.id "
+                 "WHERE check_in BETWEEN %s AND %s")
 
         return self._execute_query(query, (start, end))
 
@@ -67,7 +75,18 @@ class Exporter(Db):
             current_year = year
             current_month = month
 
-        query = "SELECT * FROM logs WHERE MONTH(check_in) = %s AND YEAR(check_in) = %s"
+        query = ("SELECT l.id AS log_id, "
+                 "w.card_id, w.name, "
+                 "l.check_in, l.check_out "
+                 "FROM logs l JOIN workers w ON l.worker_id=w.id "
+                 "WHERE (MONTH(check_in) = %s AND YEAR(check_in) = %s)"
+                 "OR (check_in IS NULL AND check_out IS NULL )")
 
         return self._execute_query(query, (current_month, current_year))
 
+
+if __name__ == "__main__":
+    logs = Exporter()
+    print(logs.export_logs_by_day())
+    print(logs.export_weekly_logs())
+    print(logs.export_monthly_logs())
