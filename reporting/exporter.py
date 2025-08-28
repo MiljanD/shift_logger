@@ -32,7 +32,7 @@ class Exporter(Db):
         if date is None:
             current_date = datetime.now()
         else:
-            current_date = convert_str_to_date(date)
+            current_date = date
 
         current_date = convert_datetime_to_date(current_date)
 
@@ -83,10 +83,3 @@ class Exporter(Db):
                  "OR (check_in IS NULL AND check_out IS NULL )")
 
         return self._execute_query(query, (current_month, current_year))
-
-
-if __name__ == "__main__":
-    logs = Exporter()
-    print(logs.export_logs_by_day())
-    print(logs.export_weekly_logs())
-    print(logs.export_monthly_logs())

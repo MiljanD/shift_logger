@@ -4,12 +4,16 @@ from monitoring.queue_manager import QueueManager
 from parsing.parser import Parser
 from parsing.validator import Validator
 from storage.worker import Worker
+from reporting.generator import ReportGenerator
+from datetime import datetime, timedelta
 
 
 data_queue = QueueManager(name="FileDataQueue")
 file_check = FileWatcher("loggings.txt", data_queue)
 
 file_check.start()
+
+report = ReportGenerator()
 
 while True:
     raw_data = data_queue.get(timeout=10)
@@ -36,3 +40,17 @@ while True:
                     worker.worker_name = record["name"]
                     worker.id_card = record["card_id"]
                     worker.generate_worker()
+
+    today = datetime.now()
+
+    if today.hour == 0:
+        report.generate_daily_pdf_report(current_date=datetime.now() - timedelta(days=1))
+
+    if today.weekday() == 0 and today.hour == 0:
+        last_week = today - timedelta(weeks=1)
+        year, week = last_week.isocalendar()[:2]
+        report.generate_weekly_report(year, week)
+
+    if today.day == 1 and today.hour == 0:
+        last_month = today.replace(day=1) - timedelta(days=1)
+        report.generate_monthly_report(year=last_month.year, month=last_month.month)

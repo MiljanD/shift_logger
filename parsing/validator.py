@@ -64,15 +64,3 @@ class Validator:
             self.check_name_type(record) and
             self.check_action(record)
         )
-
-
-
-if __name__ == "__main__":
-    validation = Validator()
-    is_valid = validation.is_valid({'card_id': '1001', 'name': 'Petar Petrovic', 'time': '2025-08-18T07:55:00', 'action': 'IN'})
-    print(is_valid)
-
-
-
-
-
